@@ -1,0 +1,100 @@
+﻿@model Vivienda.Models.Nivel1.Nivel1Model
+
+    <div class="card bg-light mb-3">
+        @if (ViewBag.Tipo == "true")
+        {
+            <div class="card-header">@Resources.Titulos.Modificar @ViewBag.Title</div>
+        }
+        else
+        {
+            <div class="card-header">@Resources.Titulos.Agregar @ViewBag.Title</div>
+        }
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="txtnombre">@ViewBag.Campo1:</label>
+                            <input type="text" maxlength="@ViewBag.Max" class="form-control valida" id="txtnombre" value="@Model.Descripcion">
+                            <div class="invalid-feedback">Dato obligatorio</div>
+                        </div>
+                    </div>
+                    
+                    @if (ViewBag.Tipo == "true")
+                    {
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="chEstatus">
+                                    <label class="custom-control-label" for="chEstatus">Estatus</label>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-6 float-left">
+                        @if (ViewBag.Tipo == "true")
+                        {
+                            <button id="btneditar" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Actualizar</button>}
+                        else
+                        {
+                            <button id="btnguardar" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Guardar</button>}
+                    </div>
+                    <div class="col-6 float-right">
+                        <a href="@Url.Action("Index")" class="btn btn-danger right"><i class="fa fa-close"></i>  Cancelar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+<select>
+    <option value="-1"></option>
+</select>
+@section scripts{
+    <script>
+        $(function () {
+            if (@ViewBag.Tipo) {
+                $('#chEstatus').prop('checked', @Model.Activo.Equals(1).ToString().ToLower())
+            }
+        });
+        function FncGetModel() {
+            var modelo = new Object();
+            modelo.Descripcion = $('#txtnombre').val();
+            //modelo.Clave = $('#txtclave').val();
+            //modelo.Colonia = $('#txtcolonia').val();
+            //modelo.Municipio = $('#txtmun').val();
+            //modelo.CP = $('#txtcp').val();
+            //modelo.Id_Estado = $('#ddlestado').val();
+            if (@ViewBag.Tipo) {
+                if ($('#chEstatus').is(":checked"))
+                    modelo.Activo =1;
+                else
+                    modelo.Activo = 1;
+                modelo.Id = @Model.Id
+            }
+            return modelo;
+        }
+        function FncActualizar() {
+            if (FncDatosRequeridos()) return;
+            FncAjax(FncGetModel(), '@Url.Action("Update")', "PUT", FncRespuesta);
+        }
+        function FncGuardar() {
+            if (FncDatosRequeridos()) return;
+            FncAjax(FncGetModel(), '@Url.Action("Create")', "POST", FncRespuesta);
+        }
+        function FncRespuesta(data) {
+            FncMensaje('Mensaje Vivienda', data.Mensaje, data.Resultado);
+            if (!@ViewBag.Tipo) {
+                if (data.Resultado) {
+                    $('#txtnombre').val("");
+                   
+                }
+            }
+        }
+        $('#btnguardar').click(function () {
+            FncGuardar();
+        });
+        $('#btneditar').click(function () {
+            FncActualizar();
+        });
+    </script>
+}

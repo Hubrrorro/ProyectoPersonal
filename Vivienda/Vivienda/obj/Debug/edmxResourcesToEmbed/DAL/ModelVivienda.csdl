@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ViviendaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Tbl_Estado">
+    <Key>
+      <PropertyRef Name="Id_Estado" />
+    </Key>
+    <Property Name="Id_Estado" Type="Int32" Nullable="false" />
+    <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Activo" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Tbl_Condominio" Relationship="ViviendaModel.FK__Tbl_Condo__Activ__3C69FB99" FromRole="Tbl_Estado" ToRole="Tbl_Condominio" />
+  </EntityType>
+  <EntityContainer Name="ViviendaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Tbl_Estado" EntityType="Self.Tbl_Estado" />
+    <EntitySet Name="Tbl_Condominio" EntityType="ViviendaModel.Tbl_Condominio" />
+    <AssociationSet Name="FK__Tbl_Condo__Activ__3C69FB99" Association="ViviendaModel.FK__Tbl_Condo__Activ__3C69FB99">
+      <End Role="Tbl_Estado" EntitySet="Tbl_Estado" />
+      <End Role="Tbl_Condominio" EntitySet="Tbl_Condominio" />
+    </AssociationSet>
+    <EntitySet Name="Tbl_Propietario" EntityType="ViviendaModel.Tbl_Propietario" />
+    <EntitySet Name="Tbl_TipoVivienda" EntityType="ViviendaModel.Tbl_TipoVivienda" />
+    <EntitySet Name="Tbl_Vivienda" EntityType="ViviendaModel.Tbl_Vivienda" />
+    <AssociationSet Name="FK__Tbl_Vivie__Id_Co__5441852A" Association="ViviendaModel.FK__Tbl_Vivie__Id_Co__5441852A">
+      <End Role="Tbl_Condominio" EntitySet="Tbl_Condominio" />
+      <End Role="Tbl_Vivienda" EntitySet="Tbl_Vivienda" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Tbl_Propi__Id_Vi__5812160E" Association="ViviendaModel.FK__Tbl_Propi__Id_Vi__5812160E">
+      <End Role="Tbl_Vivienda" EntitySet="Tbl_Vivienda" />
+      <End Role="Tbl_Propietario" EntitySet="Tbl_Propietario" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Tbl_Vivie__Id_Ti__534D60F1" Association="ViviendaModel.FK__Tbl_Vivie__Id_Ti__534D60F1">
+      <End Role="Tbl_TipoVivienda" EntitySet="Tbl_TipoVivienda" />
+      <End Role="Tbl_Vivienda" EntitySet="Tbl_Vivienda" />
+    </AssociationSet>
+    <FunctionImport Name="SP_Condominio_Consulta" ReturnType="Collection(ViviendaModel.SP_Condominio_Consulta_Result)">
+      <Parameter Name="Condominio" Mode="In" Type="String" />
+      <Parameter Name="Id_Condominio" Mode="In" Type="Int32" />
+      <Parameter Name="Activo" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="Tbl_Condominio">
+    <Key>
+      <PropertyRef Name="Id_Condominio" />
+    </Key>
+    <Property Name="Id_Condominio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Condominio" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Clave" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="Colonia" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Id_Estado" Type="Int32" Nullable="false" />
+    <Property Name="CP" Type="Int32" Nullable="false" />
+    <Property Name="Municipio" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Activo" Type="Boolean" />
+    <NavigationProperty Name="Tbl_Estado" Relationship="ViviendaModel.FK__Tbl_Condo__Activ__3C69FB99" FromRole="Tbl_Condominio" ToRole="Tbl_Estado" />
+    <NavigationProperty Name="Tbl_Vivienda" Relationship="ViviendaModel.FK__Tbl_Vivie__Id_Co__5441852A" FromRole="Tbl_Condominio" ToRole="Tbl_Vivienda" />
+  </EntityType>
+  <Association Name="FK__Tbl_Condo__Activ__3C69FB99">
+    <End Type="ViviendaModel.Tbl_Estado" Role="Tbl_Estado" Multiplicity="1" />
+    <End Type="ViviendaModel.Tbl_Condominio" Role="Tbl_Condominio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tbl_Estado">
+        <PropertyRef Name="Id_Estado" />
+      </Principal>
+      <Dependent Role="Tbl_Condominio">
+        <PropertyRef Name="Id_Estado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Tbl_Propietario">
+    <Key>
+      <PropertyRef Name="Id_Propietario" />
+    </Key>
+    <Property Name="Id_Propietario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ApePaterno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ApeMaterno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Correo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Tel1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Tel2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Cel1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Cel2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Activo" Type="Boolean" Nullable="false" />
+    <Property Name="Id_Vivienda" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Tbl_Vivienda" Relationship="ViviendaModel.FK__Tbl_Propi__Id_Vi__5812160E" FromRole="Tbl_Propietario" ToRole="Tbl_Vivienda" />
+  </EntityType>
+  <EntityType Name="Tbl_TipoVivienda">
+    <Key>
+      <PropertyRef Name="Id_TipoVivienda" />
+    </Key>
+    <Property Name="Id_TipoVivienda" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TipoVivienda" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Clave" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="Activo" Type="Boolean" />
+    <NavigationProperty Name="Tbl_Vivienda" Relationship="ViviendaModel.FK__Tbl_Vivie__Id_Ti__534D60F1" FromRole="Tbl_TipoVivienda" ToRole="Tbl_Vivienda" />
+  </EntityType>
+  <EntityType Name="Tbl_Vivienda">
+    <Key>
+      <PropertyRef Name="Id_Vivienda" />
+    </Key>
+    <Property Name="Id_Vivienda" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Vivienda" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Id_TipoVivienda" Type="Int32" Nullable="false" />
+    <Property Name="Calle" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Lote" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="NumExt" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="NumInt" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="Id_Condominio" Type="Int32" Nullable="false" />
+    <Property Name="Activo" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Tbl_Condominio" Relationship="ViviendaModel.FK__Tbl_Vivie__Id_Co__5441852A" FromRole="Tbl_Vivienda" ToRole="Tbl_Condominio" />
+    <NavigationProperty Name="Tbl_Propietario" Relationship="ViviendaModel.FK__Tbl_Propi__Id_Vi__5812160E" FromRole="Tbl_Vivienda" ToRole="Tbl_Propietario" />
+    <NavigationProperty Name="Tbl_TipoVivienda" Relationship="ViviendaModel.FK__Tbl_Vivie__Id_Ti__534D60F1" FromRole="Tbl_Vivienda" ToRole="Tbl_TipoVivienda" />
+  </EntityType>
+  <Association Name="FK__Tbl_Vivie__Id_Co__5441852A">
+    <End Type="ViviendaModel.Tbl_Condominio" Role="Tbl_Condominio" Multiplicity="1" />
+    <End Type="ViviendaModel.Tbl_Vivienda" Role="Tbl_Vivienda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tbl_Condominio">
+        <PropertyRef Name="Id_Condominio" />
+      </Principal>
+      <Dependent Role="Tbl_Vivienda">
+        <PropertyRef Name="Id_Condominio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Tbl_Propi__Id_Vi__5812160E">
+    <End Type="ViviendaModel.Tbl_Vivienda" Role="Tbl_Vivienda" Multiplicity="1" />
+    <End Type="ViviendaModel.Tbl_Propietario" Role="Tbl_Propietario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tbl_Vivienda">
+        <PropertyRef Name="Id_Vivienda" />
+      </Principal>
+      <Dependent Role="Tbl_Propietario">
+        <PropertyRef Name="Id_Vivienda" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Tbl_Vivie__Id_Ti__534D60F1">
+    <End Type="ViviendaModel.Tbl_TipoVivienda" Role="Tbl_TipoVivienda" Multiplicity="1" />
+    <End Type="ViviendaModel.Tbl_Vivienda" Role="Tbl_Vivienda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tbl_TipoVivienda">
+        <PropertyRef Name="Id_TipoVivienda" />
+      </Principal>
+      <Dependent Role="Tbl_Vivienda">
+        <PropertyRef Name="Id_TipoVivienda" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="SP_Condominio_Consulta_Result">
+    <Property Type="Int32" Name="Id_Condominio" Nullable="false" />
+    <Property Type="String" Name="Condominio" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Clave" Nullable="false" MaxLength="5" />
+    <Property Type="String" Name="Colonia" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="Id_Estado" Nullable="false" />
+    <Property Type="Int32" Name="CP" Nullable="false" />
+    <Property Type="String" Name="Municipio" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="ACTIVO" Nullable="true" />
+  </ComplexType>
+</Schema>

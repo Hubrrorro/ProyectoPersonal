@@ -1,0 +1,155 @@
+﻿@model Vivienda.DAL.Tbl_Vivienda
+
+
+<div class="card bg-light mb-3">
+    <div class="card-header">@ViewBag.Title</div>
+    <div class="card-body">
+        <div class="row">
+            @if (ViewBag.Tipo == "true")
+            {
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="txtnombre">Vivienda:</label>
+                        <input type="text"  class="form-control" id="txtvivienda" value="@Model.Vivienda" readonly>
+                        
+                    </div>
+                </div>
+            }
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="txtnombre">Calle:</label>
+                        <input type="text" maxlength="50" class="form-control valida" id="txtnombre" value="@Model.Calle">
+                        <div class="invalid-feedback">Dato obligatorio</div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="ddlCondominio">Condominio:</label>
+                        <select class="form-control" id="ddlCondominio">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="ddlTVivienda">Tipo Vivienda:</label>
+                        <select class="form-control" id="ddlTVivienda">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtlote">Lote:</label>
+                        <input type="text" maxlength="5" class="form-control" id="txtlote" value="@Model.Lote">
+                        <div class="invalid-feedback">Dato obligatorio</div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtnumExt">Num Ext:</label>
+                        <input type="text" maxlength="5" class="form-control valida" id="txtnumExt" value="@Model.NumExt">
+                        <div class="invalid-feedback">Dato obligatorio</div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtnumInt">Num Int:</label>
+                        <input type="text" maxlength="5" class="form-control" id="txtnumInt" value="@Model.NumInt">
+                        <div class="invalid-feedback">Dato obligatorio</div>
+                    </div>
+                </div>
+                @if (ViewBag.Tipo == "true")
+                {
+                    <div class="col-3">
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chEstatus">
+                                <label class="custom-control-label" for="chEstatus">Estatus</label>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        <div class="row">
+            <div class="col-6 float-left">
+                @if (ViewBag.Tipo == "true")
+                {
+                    <button id="btneditar" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Actualizar</button>}
+                else
+                {
+                    <button id="btnguardar" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Guardar</button>}
+            </div>
+            <div class="col-6 float-right">
+                <a href="@Url.Action("Index")" class="btn btn-danger right"><i class="fa fa-close"></i>  Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(function () {
+            if (@ViewBag.Tipo) {
+                $('#ddlCondominio').val("@Model.Id_Condominio");
+                $('#ddlTVivienda').val("@Model.Id_TipoVivienda");
+                $('#chEstatus').prop('checked', @Model.Activo.ToString().ToLower());
+                GetInfoDLL("@Url.Action("Select","TipoVivienda")", 'ddlTVivienda', false, "@Model.Id_TipoVivienda");
+                GetInfoDLL("@Url.Action("Select","Condominio")", 'ddlCondominio', false, "@Model.Id_Condominio");
+            }
+            else {
+                GetInfoDLL("@Url.Action("Select", "TipoVivienda")", 'ddlTVivienda', false, "-1")
+                 GetInfoDLL("@Url.Action("Select","Condominio")", 'ddlCondominio', false, "-1");
+            }
+        });
+        function FncGetModel() {
+            var modelo = new Object();
+            //modelo.Vivienda = $('#txtnombre').val();
+            modelo.Calle = $('#txtnombre').val();
+            modelo.Lote = $('#txtlote').val();
+            modelo.NumExt = $('#txtnumExt').val();
+            modelo.NumInt = $('#txtnumInt').val();
+            modelo.Id_TipoVivienda = $('#ddlTVivienda').val();
+            modelo.Id_Condominio = $('#ddlCondominio').val();
+            if (@ViewBag.Tipo) {
+                modelo.Activo = $('#chEstatus').is(":checked");
+                modelo.Id_Vivienda = @Model.Id_Vivienda;
+            }
+            return modelo;
+        }
+        function FncActualizar() {
+            if (FncDatosRequeridos()) return;
+            if ($('#ddlCondominio').val() === "-1")
+                return FncMensaje('Mensaje Vivienda', 'Es necesario agregar un condominio', false);
+            if ($('#ddlTVivienda').val() === "-1")
+                return FncMensaje('Mensaje Vivienda', 'Es necesario agregar un tipo de vivienda', false);
+            FncAjax(FncGetModel(), '@Url.Action("Update")', "PUT", FncRespuesta);
+        }
+        function FncGuardar() {
+            if (FncDatosRequeridos()) return;
+            if ($('#ddlCondominio').val() === "-1")
+                return FncMensaje('Mensaje Vivienda', 'Es necesario agregar un condominio', false);
+            if ($('#ddlTVivienda').val() === "-1")
+                return FncMensaje('Mensaje Vivienda', 'Es necesario agregar un tipo de vivienda', false);
+            FncAjax(FncGetModel(), '@Url.Action("Create")', "POST", FncRespuesta2);
+        }
+        function FncRespuesta(data) {
+            FncMensaje('Mensaje Vivienda', data.Mensaje, data.Resultado);
+        }
+        function FncRespuesta2(data) {
+            FncMensaje('Mensaje Vivienda', data.Mensaje, data.Resultado);
+            if (data.Resultado) {
+                $('#txtnombre').val("");
+                $('#txtlote').val("");
+                $('#txtnumExt').val("");
+                $('#txtnumInt').val("");
+                $('#ddlTVivienda').val("-1");
+                $('#ddlCondominio').val("-1");
+            }
+        }
+        $('#btnguardar').click(function () {
+            FncGuardar();
+        });
+        $('#btneditar').click(function () {
+            FncActualizar();
+        });
+    </script>
+}

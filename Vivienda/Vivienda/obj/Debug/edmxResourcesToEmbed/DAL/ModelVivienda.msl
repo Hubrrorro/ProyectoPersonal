@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ViviendaModelStoreContainer" CdmEntityContainer="ViviendaEntities">
+    <EntitySetMapping Name="Tbl_Estado">
+      <EntityTypeMapping TypeName="ViviendaModel.Tbl_Estado">
+        <MappingFragment StoreEntitySet="Tbl_Estado">
+          <ScalarProperty Name="Id_Estado" ColumnName="Id_Estado" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tbl_Condominio">
+      <EntityTypeMapping TypeName="ViviendaModel.Tbl_Condominio">
+        <MappingFragment StoreEntitySet="Tbl_Condominio">
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="Municipio" ColumnName="Municipio" />
+          <ScalarProperty Name="CP" ColumnName="CP" />
+          <ScalarProperty Name="Id_Estado" ColumnName="Id_Estado" />
+          <ScalarProperty Name="Colonia" ColumnName="Colonia" />
+          <ScalarProperty Name="Clave" ColumnName="Clave" />
+          <ScalarProperty Name="Condominio" ColumnName="Condominio" />
+          <ScalarProperty Name="Id_Condominio" ColumnName="Id_Condominio" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tbl_Propietario">
+      <EntityTypeMapping TypeName="ViviendaModel.Tbl_Propietario">
+        <MappingFragment StoreEntitySet="Tbl_Propietario">
+          <ScalarProperty Name="Id_Vivienda" ColumnName="Id_Vivienda" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="Cel2" ColumnName="Cel2" />
+          <ScalarProperty Name="Cel1" ColumnName="Cel1" />
+          <ScalarProperty Name="Tel2" ColumnName="Tel2" />
+          <ScalarProperty Name="Tel1" ColumnName="Tel1" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="ApeMaterno" ColumnName="ApeMaterno" />
+          <ScalarProperty Name="ApePaterno" ColumnName="ApePaterno" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Id_Propietario" ColumnName="Id_Propietario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tbl_TipoVivienda">
+      <EntityTypeMapping TypeName="ViviendaModel.Tbl_TipoVivienda">
+        <MappingFragment StoreEntitySet="Tbl_TipoVivienda">
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="Clave" ColumnName="Clave" />
+          <ScalarProperty Name="TipoVivienda" ColumnName="TipoVivienda" />
+          <ScalarProperty Name="Id_TipoVivienda" ColumnName="Id_TipoVivienda" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tbl_Vivienda">
+      <EntityTypeMapping TypeName="ViviendaModel.Tbl_Vivienda">
+        <MappingFragment StoreEntitySet="Tbl_Vivienda">
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="Id_Condominio" ColumnName="Id_Condominio" />
+          <ScalarProperty Name="NumInt" ColumnName="NumInt" />
+          <ScalarProperty Name="NumExt" ColumnName="NumExt" />
+          <ScalarProperty Name="Lote" ColumnName="Lote" />
+          <ScalarProperty Name="Calle" ColumnName="Calle" />
+          <ScalarProperty Name="Id_TipoVivienda" ColumnName="Id_TipoVivienda" />
+          <ScalarProperty Name="Vivienda" ColumnName="Vivienda" />
+          <ScalarProperty Name="Id_Vivienda" ColumnName="Id_Vivienda" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_Condominio_Consulta" FunctionName="ViviendaModel.Store.SP_Condominio_Consulta">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ViviendaModel.SP_Condominio_Consulta_Result">
+          <ScalarProperty Name="Id_Condominio" ColumnName="Id_Condominio" />
+          <ScalarProperty Name="Condominio" ColumnName="Condominio" />
+          <ScalarProperty Name="Clave" ColumnName="Clave" />
+          <ScalarProperty Name="Colonia" ColumnName="Colonia" />
+          <ScalarProperty Name="Id_Estado" ColumnName="Id_Estado" />
+          <ScalarProperty Name="CP" ColumnName="CP" />
+          <ScalarProperty Name="Municipio" ColumnName="Municipio" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light mb-3">
+            <div class="card-header">Búscar condominio</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="input-group mb-3 ">
+                            <input type="text" class="form-control" placeholder="Buscar..." id="txtbusqueda">
+                            <div class="input-group-append roundCircle">
+                                <button id="btnbusqueda" class="btn btn-info"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-md-4 col-lg-3 col-form-label" for="ddlEstatus">Estatus:</label>
+                            <div class="col-sm-7 col-md-8 col-lg-9" >
+                                <select class="form-control" id="ddlEstatus">
+                                    <option value="-1">Todos</option>
+                                    <option value="1">Activo</option>
+                                    <option value="0">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <a  href="@Url.Action("Create")" class="btn btn-success btn-circle"><i class="fa fa-plus"></i></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-hover">
+
+                        </table>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function FncGetModelFiltros() {
+            var modelo = new Object();
+            modelo.Texto1 = $('#txtbusqueda').val();
+            modelo.Estatus = $('#ddlEstatus').val();
+            return modelo;
+        }
+        function FncConsultar(url) {
+            $('.table').hide();
+            var datosfiltros = FncGetModelFiltros();
+            FncAjax(datosfiltros, url, "GET", FncConsultarTabla);
+        }
+        $('#btnbusqueda').click(function () {
+            FncConsultar('@Url.Action("Search", "Condominio")');
+        });
+        $(function () {
+           FncConsultar('@Url.Action("Search", "Condominio")');
+        });
+    </script>
+    
+    }

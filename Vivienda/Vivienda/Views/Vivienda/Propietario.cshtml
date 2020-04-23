@@ -1,0 +1,136 @@
+﻿@model Vivienda.Models.BD.PropietarioModel
+<div class="card bg-light mb-3">
+    <div class="card-header">Modificar Propietario</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-5">
+                <div class="form-group">
+                    <label for="txtnombre">Vivienda:</label>
+                    <input type="text" class="form-control" id="txtvivienda" readonly value="@Model.Vivienda">
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="txtcondominio">Condominio:</label>
+                    <input type="text" class="form-control" id="txtcondominio" readonly value="@Model.Condominio">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="txtnumExt">Num Ext:</label>
+                    <input type="text" class="form-control" id="txtnumExt" readonly value="@Model.NumExt">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="txtnumInt">Num Int:</label>
+                    <input type="text" class="form-control" id="txtnumInt" readonly @Model.NumInt>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="txtnombre">Nombre:</label>
+                    <input type="text" maxlength="50" class="form-control valida" id="txtnombre" value="@Model.Nombre">
+                    <div class="invalid-feedback">Dato obligatorio</div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="txtnombre">Apellido Paterno:</label>
+                    <input type="text" maxlength="50" class="form-control valida" id="txtapepaterno" value="@Model.ApePaterno">
+                    <div class="invalid-feedback">Dato obligatorio</div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="txtnombre">Apellido Materno:</label>
+                    <input type="text" maxlength="50" class="form-control valida" id="txtapematerno" value="@Model.ApeMaterno">
+
+                    <div class="invalid-feedback">Dato obligatorio</div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="txtcorreo">Correo:</label>
+                    <input type="text" maxlength="200" class="form-control valida" id="txtcorreo" value="@Model.Correo">
+                    <div class="invalid-feedback">Dato obligatorio</div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="txttel1">Telefono 1:</label>
+                    <input type="text" maxlength="10" class="form-control" id="txttel1" value="@Model.Tel1">
+                    <div class="invalid-feedback">Dato obligatorio</div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="txttel2">Telefono 2:</label>
+                    <input type="text" maxlength="10" class="form-control" id="txttel2" value="@Model.Tel2">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="txtcel1">Celular 1:</label>
+                    <input type="text" maxlength="10" class="form-control" id="txtcel1" value="@Model.Cel1">
+                    <div class="invalid-feedback">Dato obligatorio</div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="txtcel2">Celular 2:</label>
+                    <input type="text" maxlength="10" class="form-control" id="txtcel2" value="@Model.Cel2">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="chEstatus">
+                        <label class="custom-control-label" for="chEstatus">Estatus</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 float-left">
+                <button id="btneditar" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Actualizar</button>
+
+            </div>
+            <div class="col-6 float-right">
+                <a href="@Url.Action("Index")" class="btn btn-danger right"><i class="fa fa-close"></i>  Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(function () {
+           $('#chEstatus').prop('checked', @Model.Activo.ToString().ToLower());
+        });
+        function FncGetModel() {
+            var PropietarioModel = new Object();
+            PropietarioModel.Nombre = $('#txtnombre').val();
+            PropietarioModel.ApePaterno = $('#txtapepaterno').val();
+            PropietarioModel.ApeMaterno = $('#txtapematerno').val();
+            PropietarioModel.Correo = $('#txtcorreo').val();
+            PropietarioModel.Tel1 = $('#txttel1').val();
+            PropietarioModel.Tel2 = $('#txttel2').val();
+            PropietarioModel.Cel1 = $('#txtcel1').val();
+            PropietarioModel.Cel2 = $('#txtcel2').val();
+            PropietarioModel.Activo = $('#chEstatus').is(":checked");
+            PropietarioModel.Id_Vivienda = @Model.Id_Vivienda;
+            return PropietarioModel;
+        }
+        $('#btneditar').click(function () {
+            if (FncDatosRequeridos()) return;
+            var PropietarioModel = FncGetModel();
+            FncAjax(PropietarioModel, '@Url.Action("UpdatePropietario")', "PUT", FncRespuesta);
+        });
+        function FncRespuesta(data) {
+            FncMensaje('Mensaje Vivienda', data.Mensaje, data.Resultado);
+        }
+    </script>
+}
